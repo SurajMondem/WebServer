@@ -11,10 +11,12 @@ public class ConfigurationReader {
     private String[] parsedFile;
     private int index = 0;
 
-    public ConfigurationReader(String fileName) throws FileNotFoundException {
+    public ConfigurationReader(String fileName) {
         file = new File(fileName);
         load();
     }
+
+    public ConfigurationReader(){}
 
     public File getFile() {
         return file;
@@ -40,7 +42,7 @@ public class ConfigurationReader {
         this.parsedFile = parsedfile;
     }
 
-    public boolean hasMoreLines() throws IOException {
+    public boolean hasMoreLines() {
         if(parsedFile.length > index) {
             return true;
         }
@@ -49,7 +51,7 @@ public class ConfigurationReader {
         }
     }
 
-    public String nextLines() throws IOException {
+    public String nextLines() {
         if(hasMoreLines() == true){
             String nextline = parsedFile[index];
             index++;
@@ -60,9 +62,10 @@ public class ConfigurationReader {
 
     public void load(){
         try {
-            Contents = new String(Files.readAllBytes(Paths.get(""+file)));
+            Contents = new String(Files.readAllBytes(Paths.get("src/conf/"+file)));
             parse(Contents);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -70,7 +73,6 @@ public class ConfigurationReader {
     public void parse(String filename){
         parsedFile = filename.split("\n");
     }
-
 
 
 }
