@@ -1,12 +1,12 @@
 import Configuration.HttpdConf;
 import Configuration.MimeTypes;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.stream.Stream;
 
 public class Worker extends Thread{
@@ -17,6 +17,12 @@ public class Worker extends Thread{
     private String currentline = "";
     private Stream<String> CompleteStream;
     private Request request;
+
+    static final File WEB_ROOT = new File("");
+    static final String DEFAULT_FILE = "index.html";
+    static final String FILE_NOT_FOUND = "404.html";
+    static final String METHOD_NOT_SUPPORTED = "not_supported.html";
+
 
     public Worker(Socket socket,HttpdConf config, MimeTypes mimes) throws IOException {
         super();
@@ -35,17 +41,18 @@ public class Worker extends Thread{
                 break;
             }
             else{
+                CompleteInput += currentline;
                 list.add(currentline);
             }
         }
         CompleteStream = list.stream();
-
         parse();
     }
 
     void parse(){
         //try {
-            request = new Request(CompleteStream);
+            request = new Request(CompleteInput);
+            //request = new Request(CompleteStream);
             request.Requestparse();
 
             if (request.BadRequestExceptionFlag) {

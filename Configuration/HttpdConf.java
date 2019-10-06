@@ -17,13 +17,13 @@ public class HttpdConf extends ConfigurationReader {
 
     public HttpdConf(String fileName){
         setFile(new File(fileName));
-        System.out.println("Reached:");
+        //System.out.println("Reached:");
         load();
     }
 
     public void load(){
         super.load();
-        System.out.println("Reached:");
+        //System.out.println("Reached:");
         parse();
     }
 
@@ -33,7 +33,7 @@ public class HttpdConf extends ConfigurationReader {
             token = nextLines().split(" ");
             if(token.length > 1){
                 token[1] = token[1].replaceAll("\"","");
-                System.out.println("Print Statement :" + token[0] + " " + token[1] + " ");
+                //System.out.println("Print Statement :" + token[0] + " " + token[1] + " ");
                 if(token[0].equals("DocumentRoot")) {
 
                     DocumentRoot = token[1];

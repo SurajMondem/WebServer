@@ -12,20 +12,22 @@ public class Server {
     private static final String MIME_FILEPATH = "Conf/mime.types";
     private HttpdConf HTTPDConfiguration;
     private MimeTypes mimetypes;
-    private ServerSocket socket;
-    private Socket Connect;
+    private ServerSocket serverSocket;
+    private Socket clientSocket;
+    private PrintWriter out;
+    private BufferedReader in;
 
     public void start() throws IOException
     {
         HTTPDConfiguration = new HttpdConf("httpd.conf");
         mimetypes = new MimeTypes("mime.types");
-        System.out.println(HTTPDConfiguration.getPort());
-        socket = new ServerSocket(HTTPDConfiguration.getPort());
-
+        serverSocket = new ServerSocket(HTTPDConfiguration.getPort());
+        System.out.println("Listening for connections for port: " + HTTPDConfiguration.getPort() + "...\n");
         while(true){
-            Connect = socket.accept();
-            new Worker(Connect,HTTPDConfiguration,mimetypes);
-            Connect.close();
+            clientSocket = serverSocket.accept();
+            System.out.println("Connection opened (" + new Date() + ")");
+            new Worker(clientSocket,HTTPDConfiguration,mimetypes);
+            clientSocket.close();
         }
 
     }

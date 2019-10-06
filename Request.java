@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 public class Request {
@@ -19,6 +20,11 @@ public class Request {
     }
 
     public Request(Stream client){
+        Iterator iterator = client.iterator();
+
+        while (iterator.hasNext()){
+            RequestedString += iterator.next().toString();
+        }
 
     }
 
@@ -28,7 +34,7 @@ public class Request {
 
         verb = SplitFirstline[0];
         if(SplitFirstline.length <= 3 || !isValidVerb(verb)){
-            BadRequestExceptionFlag = false;
+            BadRequestExceptionFlag = true;
         }
         else{
             verb = SplitFirstline[0];
@@ -36,14 +42,13 @@ public class Request {
             httpVersion = SplitFirstline[2];
             headers = new HashMap<>();
 
-            if(SplitLines.length > 2){
-                int index = 1;
-                while(SplitFirstline[index].contains(": ") && index < SplitLines.length){
+            int index;
+            for (index =1;index < SplitLines.length;index++) {
+                if (SplitFirstline[index].contains(": ")) {
                     String[] TempArray = SplitLines[index].split(": ");
                     headers.put(TempArray[0], TempArray[1]);
                     index++;
                 }
-
             }
         }
 
