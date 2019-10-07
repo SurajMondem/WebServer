@@ -35,6 +35,7 @@ public class Server {
     public static void main(String[] args) throws IOException
     {
      Server run = new Server();
+     System.out.println("root dir :" + System.getProperty("user.dir"));
      System.out.println("Server Started");
      run.start();
     }

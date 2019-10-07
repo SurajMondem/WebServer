@@ -8,6 +8,7 @@ public class Request {
     private String uri;
     private String verb;
     private String httpVersion;
+    private String body;
     private HashMap<String,String> headers;
     private static String[] validverbs = {"GET","HEAD","POST","PUT","DELETE"};
 
@@ -29,11 +30,11 @@ public class Request {
     }
 
     public void Requestparse(){
-        String[] SplitLines = (RequestedString.toString().split("\\s+"));
+        String[] SplitLines = (RequestedString.toString().split("[\n\r]+"));
         String[] SplitFirstline = SplitLines[0].split("\\s+");
-
         verb = SplitFirstline[0];
-        if(SplitFirstline.length <= 3 || !isValidVerb(verb)){
+
+        if(SplitFirstline.length < 3 || !isValidVerb(verb)){
             BadRequestExceptionFlag = true;
         }
         else{
@@ -48,6 +49,9 @@ public class Request {
                     String[] TempArray = SplitLines[index].split(": ");
                     headers.put(TempArray[0], TempArray[1]);
                     index++;
+                }
+                if(headers.containsKey("Content-Length")){
+                    body = SplitLines[index];
                 }
             }
         }
@@ -88,6 +92,30 @@ public class Request {
 
     public void setHeaders(HashMap<String, String> headers) {
         this.headers = headers;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getRequestedString() {
+        return RequestedString;
+    }
+
+    public void setRequestedString(String requestedString) {
+        RequestedString = requestedString;
+    }
+
+    public boolean isBadRequestExceptionFlag() {
+        return BadRequestExceptionFlag;
+    }
+
+    public void setBadRequestExceptionFlag(boolean badRequestExceptionFlag) {
+        BadRequestExceptionFlag = badRequestExceptionFlag;
     }
 
 }
