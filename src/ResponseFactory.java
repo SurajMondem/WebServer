@@ -1,3 +1,5 @@
+import Configuration.Htaccess;
+import Configuration.Htpassword;
 import Resource.Resource;
 import Responses.*;
 import Responses.Response;
@@ -11,11 +13,27 @@ import java.util.Date;
 
 public class ResponseFactory {
 
-    Response getResponse(Request request, Resource resource){
+    Response getResponse(Request request, Resource resource) {
 
         File resourcefile = new File(resource.getFinalPath());
 
-        if(request.getVerb().equals("PUT")){
+
+        /*
+        if(resource.isProtected()){
+            Htaccess htaccess = new Htaccess(resource.getHtacesspath());
+            Htpassword htpassword = htaccess.getUserFile();
+            if (request.getAuthHeader() == null){
+
+            }
+            else if(request.getAuthHeader() != null)
+            {
+
+            }
+
+        }
+        */
+
+        if (request.getVerb().equals("PUT")) {
             if (resourcefile.isFile()) {
                 return new BadRequestResponse(resource);
             } else {
@@ -29,8 +47,7 @@ public class ResponseFactory {
                 return new CreatedResponse(resource);
             }
 
-        }
-        else if (request.getVerb().equals("GET")){
+        } else if (request.getVerb().equals("GET")) {
 
             try {
                 resource.setBody(Files.readAllBytes(Paths.get(resource.getFinalPath())));
@@ -38,11 +55,10 @@ public class ResponseFactory {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //resource.setModifiedResource(true);
+            resource.setResourceModified(true);
             return new OKResponse(resource);
 
-        }
-        else if (request.getVerb().equals("DELETE")){
+        } else if (request.getVerb().equals("DELETE")) {
             if (resourcefile.isFile()) {
                 resourcefile.delete();
                 return new NoContentResponse(resource);
@@ -51,13 +67,10 @@ public class ResponseFactory {
                 return new BadRequestResponse(resource);
             }
 
-        }
-        else if (request.getVerb().equals("HEAD")){
+        } else if (request.getVerb().equals("HEAD")) {
             resource.setLastModified(new Date(resourcefile.lastModified()));
             return new HeadResponse(resource);
-        }
-        else if (request.getVerb().equals("POST"))
-        {
+        } else if (request.getVerb().equals("POST")) {
             try {
                 resource.setBody(Files.readAllBytes(Paths.get(resource.getFinalPath())));
             } catch (IOException e) {
@@ -65,9 +78,8 @@ public class ResponseFactory {
                 return new BadRequestResponse(resource);
             }
             return new PostResponse(resource);
-        }
-        else {
-                return new BadRequestResponse(resource);
+        } else {
+            return new BadRequestResponse(resource);
         }
 
     }

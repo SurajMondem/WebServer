@@ -31,7 +31,7 @@ public class Response {
         printStream.println("Date: " + new Date());
         printStream.println("Server: " + ServerName());
         printStream.println("Content-Type: " + resource.getContentType());
-        printStream.println("Content-Length: " +  resource.getBody().length);
+        printStream.println("Content-Length: " +  getContentLength());
         printStream.println();
 
         if (bodyflag && !resource.getContentType().contains("image")) {
@@ -62,6 +62,10 @@ public class Response {
             e.printStackTrace();
         }
         return "apache";
+    }
+
+    public int getContentLength(){
+        return resource.getBody().length;
     }
 
     public void setBodyflag(boolean bodyflag) {

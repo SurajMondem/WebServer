@@ -21,12 +21,13 @@ public class Server {
     {
         HTTPDConfiguration = new HttpdConf("httpd.conf");
         mimetypes = new MimeTypes("mime.types");
+        Logger logger = new Logger(HTTPDConfiguration.getLogfile());
         serverSocket = new ServerSocket(HTTPDConfiguration.getPort());
         System.out.println("Listening for connections for port: " + HTTPDConfiguration.getPort() + "...\n");
         while(true){
             clientSocket = serverSocket.accept();
             System.out.println("Connection opened (" + new Date() + ")");
-            new Worker(clientSocket,HTTPDConfiguration,mimetypes);
+            new Worker(clientSocket,HTTPDConfiguration,mimetypes,logger);
             clientSocket.close();
         }
 
@@ -35,7 +36,6 @@ public class Server {
     public static void main(String[] args) throws IOException
     {
      Server run = new Server();
-     System.out.println("root dir :" + System.getProperty("user.dir"));
      System.out.println("Server Started");
      run.start();
     }

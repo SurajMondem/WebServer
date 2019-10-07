@@ -15,6 +15,10 @@ public class HttpdConf extends ConfigurationReader {
     private String AccessFile = ".htaccess";
     private String directoryIndex = "index.html";
 
+
+
+    private String logfile = "";
+
     public HttpdConf(String fileName){
         setFile(new File(fileName));
         //System.out.println("Reached:");
@@ -55,6 +59,9 @@ public class HttpdConf extends ConfigurationReader {
                 }
                 else if(token[0].equals("DirectoryIndex")) {
                         directoryIndex = token[1];
+                }
+                else if(token[0].equals("LogFile")){
+                    logfile = token[1];
                 }
                 else{
                             Httpdconfig.put(token[0],token[1]);
@@ -113,6 +120,14 @@ public class HttpdConf extends ConfigurationReader {
 
     public void setDirectoryIndex(String directoryIndex) {
         this.directoryIndex = directoryIndex;
+    }
+
+    public String getLogfile() {
+        return logfile;
+    }
+
+    public void setLogfile(String logfile) {
+        this.logfile = logfile;
     }
 
 

@@ -3,6 +3,7 @@ package Resource;
 import Configuration.HttpdConf;
 import Configuration.MimeTypes;
 
+import java.io.File;
 import java.util.Date;
 
 public class Resource {
@@ -19,6 +20,10 @@ public class Resource {
     private boolean resourceModified = false;
     private Date lastModified;
     private byte[] body = "".getBytes();
+
+
+
+    private String htacesspath;
 
     public Resource(String uri, HttpdConf config, MimeTypes mimeTypes){
         this.config = config;
@@ -72,11 +77,17 @@ public class Resource {
         return null;
     }
 
-    boolean isScript(){
+    public boolean isScript(){
         return false;
     }
 
-    boolean isProtected(){
+    public boolean isProtected(){
+        String[] parseFinalpath = FinalPath.split("/");
+        for(int index = 0;index < parseFinalpath.length;index++){
+            htacesspath = parseFinalpath[index]+"/";
+            return (new File(htacesspath + config.getAccessFile()).exists());
+        }
+
         return false;
     }
 
@@ -165,6 +176,14 @@ public class Resource {
 
     public void setURIModified(boolean URIModified) {
         this.URIModified = URIModified;
+    }
+
+    public String getHtacesspath() {
+        return htacesspath;
+    }
+
+    public void setHtacesspath(String htacesspath) {
+        this.htacesspath = htacesspath;
     }
 
 }

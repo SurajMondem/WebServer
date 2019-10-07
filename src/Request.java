@@ -70,6 +70,13 @@ public class Request {
         this.uri = uri;
     }
 
+    public String getAuthHeader(){
+        if(headers.containsKey("Authorization")){
+            return headers.get("Authorization").toString();
+        }
+        else {return null;}
+    }
+
     public String getVerb() {
         return verb;
     }
@@ -117,5 +124,6 @@ public class Request {
     public void setBadRequestExceptionFlag(boolean badRequestExceptionFlag) {
         BadRequestExceptionFlag = badRequestExceptionFlag;
     }
+
 
 }

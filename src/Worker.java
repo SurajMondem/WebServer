@@ -2,6 +2,7 @@ import Configuration.HttpdConf;
 import Configuration.MimeTypes;
 import Resource.Resource;
 import Responses.Response;
+import Exception.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,6 +24,7 @@ public class Worker extends Thread{
     private Request request;
     private Resource resource;
     private Response response;
+    private Logger logger;
 
     static final File WEB_ROOT = new File("");
     static final String DEFAULT_FILE = "index.html";
@@ -30,11 +32,12 @@ public class Worker extends Thread{
     static final String METHOD_NOT_SUPPORTED = "not_supported.html";
 
 
-    public Worker(Socket socket,HttpdConf config, MimeTypes mimes) throws IOException {
+    public Worker(Socket socket,HttpdConf config, MimeTypes mimes, Logger logs) throws IOException {
         super();
         this.client = socket;
         this.config = config;
         this.Mimes = mimes;
+        this.logger = logs;
 
         Readinput(client);
     }
@@ -62,7 +65,7 @@ public class Worker extends Thread{
     void parse(){
         try {
             request = new Request(CompleteInput);
-            //request = new Request(CompleteStream);
+            //request = new Request(Comple teStream);
             request.Requestparse();
             if (request.BadRequestExceptionFlag) {
                 throw new BadRequest(client);
@@ -83,7 +86,9 @@ public class Worker extends Thread{
         try {
             response = responseFactory.getResponse(request, resource);
             response.send(client.getOutputStream());
-            //logger.write(request, response);
+            System.out.println();
+            System.out.println("Getting exception from here");
+            logger.write(request, response);
         } catch (IOException e) {
             e.printStackTrace();
         }
