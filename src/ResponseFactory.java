@@ -1,8 +1,5 @@
-import Configuration.Htaccess;
-import Configuration.Htpassword;
 import Resource.Resource;
 import Responses.*;
-import Responses.Response;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
-public class ResponseFactory {
+class ResponseFactory {
 
     Response getResponse(Request request, Resource resource) {
 
@@ -59,7 +56,8 @@ public class ResponseFactory {
             return new OKResponse(resource);
 
         } else if (request.getVerb().equals("DELETE")) {
-            if (resourcefile.isFile()) {
+            if (resourcefile.isFile())
+            {
                 resourcefile.delete();
                 return new NoContentResponse(resource);
             } else {

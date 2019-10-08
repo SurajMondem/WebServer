@@ -1,6 +1,5 @@
 package Configuration;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -9,11 +8,11 @@ import java.util.HashMap;
 public class Htpassword extends ConfigurationReader {
     private HashMap<String, String> passwords;
 
-    public Htpassword( String filename ) throws IOException {
+    public Htpassword( String filename ){
         super( filename );
         System.out.println( "Password file: " + filename );
 
-        this.passwords = new HashMap<String, String>();
+        this.passwords = new HashMap<>();
         this.load();
     }
 
@@ -46,12 +45,7 @@ public class Htpassword extends ConfigurationReader {
         Object key1 = encryptClearPassword(password);
         Object key2 = passwords.get(username);
 
-        if(key1.equals(key2)) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return key1.equals(key2);
 
     }
 

@@ -3,14 +3,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public class Request {
+class Request {
 
     private String uri;
     private String verb;
     private String httpVersion;
     private String body;
     private HashMap<String,String> headers;
-    private static String[] validverbs = {"GET","HEAD","POST","PUT","DELETE"};
+    private static final String[] validverbs = {"GET","HEAD","POST","PUT","DELETE"};
 
     private String RequestedString = "";
 
@@ -24,13 +24,14 @@ public class Request {
         Iterator iterator = client.iterator();
 
         while (iterator.hasNext()){
-            RequestedString += iterator.next().toString();
+            StringBuilder builder = new StringBuilder();
+            RequestedString = (builder.append(iterator.next().toString())).toString();
         }
 
     }
 
     public void Requestparse(){
-        String[] SplitLines = (RequestedString.toString().split("[\n\r]+"));
+        String[] SplitLines = (RequestedString.split("[\n\r]+"));
         String[] SplitFirstline = SplitLines[0].split("\\s+");
         verb = SplitFirstline[0];
 
@@ -58,7 +59,7 @@ public class Request {
 
     }
 
-    public boolean isValidVerb(String verb){
+    private boolean isValidVerb(String verb){
         return Arrays.asList( validverbs).contains(verb);
     }
 
@@ -71,10 +72,7 @@ public class Request {
     }
 
     public String getAuthHeader(){
-        if(headers.containsKey("Authorization")){
-            return headers.get("Authorization").toString();
-        }
-        else {return null;}
+        return headers.getOrDefault("Authorization", null);
     }
 
     public String getVerb() {

@@ -7,10 +7,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Date;
 
-public class InternalServerError extends Exception {
+class InternalServerError extends Exception {
 
-    InetAddress inetAddress;
-    String hostName;
+    private String hostName;
 
 
     public InternalServerError(Socket client) {
@@ -32,7 +31,7 @@ public class InternalServerError extends Exception {
 
     private String ServerName(){
         try {
-            inetAddress = InetAddress.getLocalHost();
+            InetAddress inetAddress = InetAddress.getLocalHost();
             hostName = inetAddress.getHostName();
         } catch (UnknownHostException e) {
             e.printStackTrace();

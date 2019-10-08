@@ -11,27 +11,25 @@ import java.util.Date;
 
 public class Response {
 
-    protected int code;
-    protected String StatusReason;
+    private int code;
+    String StatusReason;
+    private boolean bodyflag;
     private Resource resource;
-    protected InetAddress inetAddress;
-    String hostName;
-    String httpVersion = "1.1";
-    boolean bodyflag;
 
 
-    public Response(Resource resource) {
+    Response(Resource resource) {
         this.resource = resource;
     }
 
-    public void send(OutputStream out){
+    public void send(OutputStream out) {
         PrintStream printStream = new PrintStream(out);
 
+        String httpVersion = "1.1";
         printStream.println("HTTP/" + httpVersion + " " + code + " " + StatusReason);
         printStream.println("Date: " + new Date());
         printStream.println("Server: " + ServerName());
         printStream.println("Content-Type: " + resource.getContentType());
-        printStream.println("Content-Length: " +  getContentLength());
+        printStream.println("Content-Length: " + getContentLength());
         printStream.println();
 
         if (bodyflag && !resource.getContentType().contains("image")) {
@@ -53,34 +51,33 @@ public class Response {
         }
     }
 
-    public String ServerName(){
+    private String ServerName() {
         try {
-            inetAddress = InetAddress.getLocalHost();
-            hostName = inetAddress.getHostName();
-            return hostName;
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            return inetAddress.getHostName();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
         return "apache";
     }
 
-    public int getContentLength(){
+    public int getContentLength() {
         return resource.getBody().length;
-    }
-
-    public void setBodyflag(boolean bodyflag) {
-        this.bodyflag = bodyflag;
     }
 
     public boolean isBodyflag() {
         return bodyflag;
     }
 
+    void setBodyflag(boolean bodyflag) {
+        this.bodyflag = bodyflag;
+    }
+
     public int getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    void setCode(int code) {
         this.code = code;
     }
 

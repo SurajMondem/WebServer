@@ -20,9 +20,9 @@ public class Htaccess extends ConfigurationReader {
     public void load(){
         try {
             String fileContents = new String(Files.readAllBytes(Paths.get(fileLocation)));
-            String[] Splitline = fileContents.split("\n");
-            for (int index = 0; index < Splitline.length; index++){
-                String[] token = Splitline[index].replaceAll("\"","").split(" ", 2);
+            String[] SplitLine = fileContents.split("\n");
+            for (String index : SplitLine){
+                String[] token = SplitLine[Integer.parseInt(index)].replaceAll("\"","").split(" ", 2);
                 if(token[0].equals("AuthUserFile")){
                     userFile = new Htpassword(token[1]);
                 }

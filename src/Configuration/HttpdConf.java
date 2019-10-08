@@ -1,8 +1,6 @@
 package Configuration;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class HttpdConf extends ConfigurationReader {
@@ -31,7 +29,7 @@ public class HttpdConf extends ConfigurationReader {
         parse();
     }
 
-    public void parse() {
+    private void parse() {
         String[] token;
         while (hasMoreLines()){
             token = nextLines().split(" ");

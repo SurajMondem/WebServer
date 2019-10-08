@@ -4,72 +4,46 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class ConfigurationReader {
+class ConfigurationReader {
     private File file;
-    private BufferedReader read;
-    private String Contents;
     private String[] parsedFile;
     private int index = 0;
 
-    public ConfigurationReader(String fileName) {
+    ConfigurationReader(String fileName) {
         file = new File(fileName);
         load();
     }
 
-    public ConfigurationReader() {
+    ConfigurationReader() {
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
+    void setFile(File file) {
         this.file = file;
     }
 
-    public String getContents() {
-        return Contents;
+    boolean hasMoreLines() {
+        return parsedFile.length > index;
     }
 
-    public void setContents(String contents) {
-        this.Contents = contents;
-    }
-
-    public String[] getParsedfile() {
-        return parsedFile;
-    }
-
-    public void setParsedFile(String[] parsedfile) {
-        this.parsedFile = parsedfile;
-    }
-
-    public boolean hasMoreLines() {
-        if (parsedFile.length > index) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public String nextLines() {
-        if (hasMoreLines() == true) {
-            String nextline = parsedFile[index];
+    String nextLines() {
+        if (hasMoreLines()) {
+            String nextLine = parsedFile[index];
             index++;
-            return nextline;
+            return nextLine;
         }
         return null;
     }
 
-    public void load() {
+    void load() {
         try {
-            Contents = new String(Files.readAllBytes(Paths.get("src/conf/" + file)));
-            parse(Contents);
+            String contents = new String(Files.readAllBytes(Paths.get("src/conf/" + file)));
+            parse(contents);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void parse(String filename) {
+    private void parse(String filename) {
         parsedFile = filename.split("\n");
     }
 

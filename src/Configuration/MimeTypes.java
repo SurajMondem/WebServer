@@ -17,7 +17,7 @@ public class MimeTypes extends ConfigurationReader{
         parse();
     }
 
-    public void parse(){
+    private void parse(){
         String[] token;
         while(hasMoreLines()){
             token = nextLines().replaceAll("\\s"," ").split(" ");

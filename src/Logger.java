@@ -10,11 +10,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Logger {
+class Logger {
 
-    File file;
-    InetAddress inetAddress;
-    String hostName;
+    private File file;
 
     public Logger(String fileName) {
         file = new File(fileName);
@@ -26,7 +24,7 @@ public class Logger {
         try {
             PrintWriter writer = new PrintWriter(new FileOutputStream(file,true));
 
-            inetAddress = InetAddress.getLocalHost();
+            InetAddress inetAddress = InetAddress.getLocalHost();
             Date date = new Date();
             DateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z");
             writer.print(inetAddress.getHostName() + " " + "[" + dateFormat.format(date) + "]" + " ");
@@ -42,9 +40,7 @@ public class Logger {
 
             writer.close();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnknownHostException e) {
+        } catch (FileNotFoundException | UnknownHostException e) {
             e.printStackTrace();
         }
 

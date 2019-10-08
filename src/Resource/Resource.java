@@ -15,7 +15,6 @@ public class Resource {
     private String uri;
     private String contentType;
     private String rootpath;
-    private String Temppath = "";
     private boolean URIModified = false;
     private boolean resourceModified = false;
     private Date lastModified;
@@ -33,26 +32,27 @@ public class Resource {
         this.contentType = setContentType(uri,mimeTypes);
         rootpath = config.getDocumentRoot();
 
-        if (URIModified == false) {
-           this.Temppath  = rootpath + this.uri;
+        String temppath = "";
+        if (!URIModified) {
+           temppath = rootpath + this.uri;
         }
 
-        FinalPath = Temppath;
+        FinalPath = temppath;
         setQueryString();
 
-        if (!Temppath.contains(".") && !isScript()){
+        if (!temppath.contains(".") && !isScript()){
             FinalPath = FinalPath + "/" + config.getDirectoryIndex();
         }
     }
 
-    public String setContentType(String uri, MimeTypes mimeTypes) {
+    private String setContentType(String uri, MimeTypes mimeTypes) {
 
         String[] temp = uri.split("/");
 
         if(temp.length <= 1){
             return mimeTypes.lookup("html");
         }
-        else if(temp.length > 1){
+        else {
             String[] extension = temp[temp.length-1].split("\\.");
             if(extension.length>1){
                 return mimeTypes.lookup(extension[extension.length-1]);
@@ -62,32 +62,28 @@ public class Resource {
 
     }
 
-    public void setQueryString() {
+    private void setQueryString() {
         if (isScript()) {
             if (FinalPath.contains("?") && !FinalPath.substring(FinalPath.length() - 1).equals("?")) {
-                String separateString[] = FinalPath.split("\\?+");
+                String[] separateString = FinalPath.split("\\?+");
                 FinalPath = separateString[0];
                 queryString = separateString[1];
             }
         }
     }
 
-    public String absolutePath(){
 
-        return null;
-    }
-
-    public boolean isScript(){
+    private boolean isScript(){
         return false;
     }
 
     public boolean isProtected(){
-        String[] parseFinalpath = FinalPath.split("/");
-        for(int index = 0;index < parseFinalpath.length;index++){
-            htacesspath = parseFinalpath[index]+"/";
+        String[] parseFinalPath = FinalPath.split("/");
+        for (String index: parseFinalPath)
+        {
+            htacesspath = parseFinalPath[Integer.parseInt(index)]+"/";
             return (new File(htacesspath + config.getAccessFile()).exists());
         }
-
         return false;
     }
 
@@ -170,6 +166,7 @@ public class Resource {
     public void setFinalPath(String finalPath) {
         FinalPath = finalPath;
     }
+
     public boolean isURIModified() {
         return URIModified;
     }

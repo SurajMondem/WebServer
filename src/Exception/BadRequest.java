@@ -9,12 +9,11 @@ import java.util.Date;
 
 public class BadRequest extends Exception{
 
-    private InetAddress inetAddress;
     private String Hostname;
 
     public BadRequest(Socket client) {
         super();
-        PrintStream ps = null;
+        PrintStream ps;
         try {
             ps = new PrintStream(client.getOutputStream());
             ps.println("HTTP/1.1 400 Bad Request");
@@ -30,7 +29,7 @@ public class BadRequest extends Exception{
 
     private String ServerName(){
         try {
-            inetAddress = InetAddress.getLocalHost();
+            InetAddress inetAddress = InetAddress.getLocalHost();
             Hostname = inetAddress.getHostName();
         } catch (UnknownHostException e) {
             e.printStackTrace();
