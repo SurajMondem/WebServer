@@ -14,22 +14,6 @@ class ResponseFactory {
 
         File resourcefile = new File(resource.getFinalPath());
 
-
-        /*
-        if(resource.isProtected()){
-            Htaccess htaccess = new Htaccess(resource.getHtacesspath());
-            Htpassword htpassword = htaccess.getUserFile();
-            if (request.getAuthHeader() == null){
-
-            }
-            else if(request.getAuthHeader() != null)
-            {
-
-            }
-
-        }
-        */
-
         if (request.getVerb().equals("PUT")) {
             if (resourcefile.isFile()) {
                 return new BadRequestResponse(resource);
@@ -56,8 +40,7 @@ class ResponseFactory {
             return new OKResponse(resource);
 
         } else if (request.getVerb().equals("DELETE")) {
-            if (resourcefile.isFile())
-            {
+            if (resourcefile.isFile()) {
                 resourcefile.delete();
                 return new NoContentResponse(resource);
             } else {

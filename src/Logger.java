@@ -16,7 +16,6 @@ class Logger {
 
     public Logger(String fileName) {
         file = new File(fileName);
-        System.out.println(fileName);
     }
 
     void write (Request request, Response response){

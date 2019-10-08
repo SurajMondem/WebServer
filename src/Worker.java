@@ -33,8 +33,6 @@ class Worker extends Thread{
     private void Readinput(Socket client) throws IOException {
         BufferedReader readClientInput = new BufferedReader(new InputStreamReader(client.getInputStream()));
         List<String> list = new ArrayList<>();
-        //System.out.println(readClientInput.readLine());
-        //System.out.println((currentline = readClientInput.readLine())!= null);
         String currentLine;
         while ((currentLine = readClientInput.readLine())!= null){
             if(currentLine.isEmpty()){
@@ -42,7 +40,6 @@ class Worker extends Thread{
             }
             else{
                 CompleteInput += currentLine;
-                //System.out.println(currentline);
                 list.add(currentLine);
             }
         }
@@ -54,7 +51,6 @@ class Worker extends Thread{
     private void parse(){
         try {
             request = new Request(CompleteInput);
-            //request = new Request(CompleteStream);
             request.Requestparse();
             if (request.BadRequestExceptionFlag) {
                 throw new BadRequest(client);
@@ -75,8 +71,6 @@ class Worker extends Thread{
         try {
             Response response = responseFactory.getResponse(request, resource);
             response.send(client.getOutputStream());
-            System.out.println();
-            System.out.println("Getting exception from here");
             logger.write(request, response);
         } catch (IOException e) {
             e.printStackTrace();

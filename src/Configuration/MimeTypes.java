@@ -21,7 +21,6 @@ public class MimeTypes extends ConfigurationReader{
         String[] token;
         while(hasMoreLines()){
             token = nextLines().replaceAll("\\s"," ").split(" ");
-            //System.out.println(" Mime types :" + token[0]);
             if(!token[0].startsWith("#")){
                 if (token.length >= 2){
                     for(int index = 1;index < token.length;index++){
